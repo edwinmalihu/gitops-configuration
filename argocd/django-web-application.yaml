@@ -20,7 +20,7 @@ spec:
     # URL repositori GitLab Anda
     repoURL: "https://github.com/edwinmalihu/gitops-configuration.git"
     # Jalur ke direktori manifest untuk config-service
-    path: manifests/django-web-deployment.yaml
+    path: manifests/django-web-app
     # Branch atau tag yang ingin disinkronkan
     targetRevision: HEAD
 
