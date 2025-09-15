@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django-web
+  template:
+    metadata:
+      labels:
+        app: django-web
+    spec:
+      containers:
+        - name: django-web
+          image: "edwinmalihu/django-webapp:latest" # Ganti dengan nama image yang sesuai
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-web
+spec:
+  selector:
+    app: django-web # Harus cocok dengan label di Deployment
+  ports:
+    - protocol: TCP
+      port: 8000 # Port internal service
+      targetPort: 8000 # Port pada container
+  type: NodePort # Mengekspos service di luar cluster Minikube

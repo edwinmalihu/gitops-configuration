@@ -1,0 +1,38 @@
+# argocd/config-service-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # Nama aplikasi di dalam dashboard ArgoCD
+  name: django-web
+  namespace: argocd
+  # Anotasi untuk mengatur urutan deployment (sync-wave)
+  annotations:
+    # Anotasi opsional untuk deskripsi
+    argocd.argoproj.io/applicationset-generator: "true"
+    argocd.argoproj.io/sync-options: "Validate=false"
+
+spec:
+  # Proyek ArgoCD, default biasanya sudah cukup
+  project: default
+
+  # Konfigurasi repositori sumber (tempat manifest berada)
+  source:
+    # URL repositori GitLab Anda
+    repoURL: "https://gitlab.com/edwinmalihu/gitops-configuration.git"
+    # Jalur ke direktori manifest untuk config-service
+    path: manifests/django-web-deployment.yaml
+    # Branch atau tag yang ingin disinkronkan
+    targetRevision: HEAD
+
+  # Konfigurasi klaster tujuan (tempat deployment akan dilakukan)
+  destination:
+    # URL server klaster
+    server: "https://kubernetes.default.svc"
+    # Namespace di mana service akan di-deploy
+    namespace: django
+
+  # Kebijakan sinkronisasi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
