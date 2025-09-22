@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: django-gateway
+  namespace: django
+spec:
+  selector:
+    istio: ingressgateway # Menggunakan ingress gateway default Istio
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*" # Menerima semua hostname

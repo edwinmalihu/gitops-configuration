@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: django-web
+  namespace: django
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - django-gateway
+  http:
+    # Aturan rewrite akan mengubah Host header menjadi host internal layanan
+    - rewrite:
+        authority: "django-web.django.svc.cluster.local:8000"
+      match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: django-web.django.svc.cluster.local
+            port:
+              number: 8000
